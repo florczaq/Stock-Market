@@ -23,11 +23,7 @@ public class Wallet {
     @Id
     private String id;
     
-    @JoinTable(
-      name = "wallet_stocks",
-      joinColumns = @JoinColumn(name = "wallet_id"),
-      inverseJoinColumns = @JoinColumn(name = "stock_id")
-    )
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Wallet_Stocks> stocks;
     
     public WalletDTO toDTO () {
