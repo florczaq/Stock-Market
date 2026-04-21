@@ -32,12 +32,12 @@ public class BankService {
     public void decreaseStockQuantityByOne (String stockName)
       throws StockNotFoundException, NotEnoughStockException {
         Stock stock = this.getStockByName(stockName);
-        
-        if (stock.getQuantity() - 1 <= 0) {
+
+        if (stock.getQuantity() - 1 < 0) {
             throw new NotEnoughStockException(
               String.format("Not enough stock with name \"%s\" in the bank", stockName));
         }
-        
+
         stockRepository.save(stock.setQuantity(stock.getQuantity() - 1));
     }
     
@@ -47,16 +47,15 @@ public class BankService {
     }
     
     public void setBankState (BankDTO bankDTO) throws IllegalArgumentException {
+        stockRepository.deleteAll();
         bankDTO.stocks().forEach(stockDTO -> {
-            Stock stock = stockRepository
-              .findByStockName(stockDTO.name())
-              .orElse(new Stock().setStockName(stockDTO.name()));
             if (stockDTO.quantity() < 0) {
                 throw new IllegalArgumentException(
                   String.format("Stock quantity cannot be negative for stock with name \"%s\"", stockDTO.name()));
             }
-            stock.setQuantity(stockDTO.quantity());
-            stockRepository.save(stock);
+            stockRepository.save(new Stock()
+              .setStockName(stockDTO.name())
+              .setQuantity(stockDTO.quantity()));
         });
     }
 }
