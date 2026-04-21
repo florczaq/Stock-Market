@@ -1,12 +1,15 @@
 package remitly.stockmarket.bank.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import remitly.stockmarket.bank.dto.BankDTO;
 import remitly.stockmarket.bank.entity.Stock;
-import remitly.stockmarket.bank.exception.StockNotFoundException;
 import remitly.stockmarket.bank.repository.StockRepository;
+import remitly.stockmarket.global.dto.StockDTO;
 import remitly.stockmarket.global.exception.NotEnoughStockException;
+import remitly.stockmarket.global.exception.StockNotFoundException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +25,12 @@ public class BankService {
           );
     }
     
+    public List<StockDTO> getAllStocks () {
+        return stockRepository.findAll().stream().map(Stock::toDTO).toList();
+    }
+    
     public void decreaseStockQuantityByOne (String stockName)
-      throws EntityNotFoundException, NotEnoughStockException {
+      throws StockNotFoundException, NotEnoughStockException {
         Stock stock = this.getStockByName(stockName);
         
         if (stock.getQuantity() - 1 <= 0) {
@@ -34,9 +41,22 @@ public class BankService {
         stockRepository.save(stock.setQuantity(stock.getQuantity() - 1));
     }
     
-    
-    public void increaseStockQuantityByOne (String stockName) throws EntityNotFoundException {
+    public void increaseStockQuantityByOne (String stockName) throws StockNotFoundException {
         Stock stock = this.getStockByName(stockName);
         stockRepository.save(stock.setQuantity(stock.getQuantity() + 1));
+    }
+    
+    public void setBankState (BankDTO bankDTO) throws IllegalArgumentException {
+        bankDTO.stocks().forEach(stockDTO -> {
+            Stock stock = stockRepository
+              .findByStockName(stockDTO.name())
+              .orElse(new Stock().setStockName(stockDTO.name()));
+            if (stockDTO.quantity() < 0) {
+                throw new IllegalArgumentException(
+                  String.format("Stock quantity cannot be negative for stock with name \"%s\"", stockDTO.name()));
+            }
+            stock.setQuantity(stockDTO.quantity());
+            stockRepository.save(stock);
+        });
     }
 }

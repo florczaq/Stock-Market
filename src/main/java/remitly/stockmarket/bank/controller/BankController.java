@@ -1,20 +1,25 @@
 package remitly.stockmarket.bank.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import remitly.stockmarket.bank.dto.BankDTO;
+import remitly.stockmarket.bank.service.BankService;
 
 @RestController
 @RequestMapping("/stocks")
+@RequiredArgsConstructor
 public class BankController {
+    private final BankService bankService;
+    
     @GetMapping
-    public String getStocks () {
-        return "List of stocks";
+    public ResponseEntity<BankDTO> getStocks () {
+        return ResponseEntity.ok(new BankDTO(bankService.getAllStocks()));
     }
     
     @PostMapping
-    public String addStock () {
-        return "Stock added";
+    public ResponseEntity<Void> setBankState (@RequestBody BankDTO bankDTO) {
+        bankService.setBankState(bankDTO);
+        return ResponseEntity.ok().build();
     }
 }
