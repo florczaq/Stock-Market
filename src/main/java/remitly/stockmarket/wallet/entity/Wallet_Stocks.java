@@ -13,7 +13,6 @@ import remitly.stockmarket.global.dto.StockDTO;
 @Getter
 @Setter
 @Accessors(chain = true)
-@SuppressWarnings("JpaDataSourceORMInspection")
 public class Wallet_Stocks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

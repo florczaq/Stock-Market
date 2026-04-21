@@ -16,7 +16,6 @@ import remitly.stockmarket.global.dto.StockDTO;
 @Getter
 @Setter
 @Accessors(chain = true)
-@SuppressWarnings("JpaDataSourceORMInspection")
 public class Stock {
     
     @Id

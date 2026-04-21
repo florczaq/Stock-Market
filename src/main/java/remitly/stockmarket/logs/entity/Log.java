@@ -13,7 +13,6 @@ import java.util.Locale;
 @Entity
 @Table(name = "logs")
 @NoArgsConstructor
-@SuppressWarnings("JpaDataSourceORMInspection")
 @Setter
 @Getter
 @Accessors(chain = true)

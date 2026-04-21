@@ -18,7 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
-@SuppressWarnings("JpaDataSourceORMInspection")
 public class Wallet {
     @Id
     private String id;
