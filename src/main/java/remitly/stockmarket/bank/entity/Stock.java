@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import remitly.stockmarket.global.dto.StockDTO;
 
 @Entity
 @Table(name = "stock")
@@ -28,4 +29,8 @@ public class Stock {
     @Column(nullable = false)
     @Min(0)
     public int quantity;
+    
+    public StockDTO toDTO () {
+        return new StockDTO(stockName, quantity);
+    }
 }

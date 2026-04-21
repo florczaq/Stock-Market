@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import remitly.stockmarket.bank.exception.StockNotFoundException;
 import remitly.stockmarket.bank.service.BankService;
 import remitly.stockmarket.wallet.entity.Wallet_Stocks;
@@ -20,6 +21,7 @@ public class WalletService {
     private final WalletRepository walletRepository;
     private final BankService bankService;
     
+    @Transactional
     public void performStockOperation (
       @NotNull @NotBlank String walletId,
       @NotNull @NotBlank String stockName,
@@ -43,7 +45,8 @@ public class WalletService {
         
     }
     
-    private void decreaseStockQuantityByOne (String walletName, String stockName)
+    @Transactional
+    protected void decreaseStockQuantityByOne (String walletName, String stockName)
       throws EntityNotFoundException, NotEnoughStockException {
         Wallet wallet = walletRepository
           .findById(walletName)
@@ -64,7 +67,8 @@ public class WalletService {
         walletRepository.save(wallet);
     }
     
-    private void increaseStockQuantityByOne (String walletName, String stockName) {
+    @Transactional
+    protected void increaseStockQuantityByOne (String walletName, String stockName) {
         Wallet wallet = walletRepository
           .findById(walletName)
           .orElseThrow(() -> new EntityNotFoundException("Wallet with id " + walletName + " not found"));

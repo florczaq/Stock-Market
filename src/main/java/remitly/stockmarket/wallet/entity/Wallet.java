@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import remitly.stockmarket.bank.entity.Stock;
+import remitly.stockmarket.global.dto.StockDTO;
+import remitly.stockmarket.wallet.dto.WalletDTO;
 
 import java.util.List;
 
@@ -30,5 +32,13 @@ public class Wallet {
     )
     private List<Wallet_Stocks> stocks;
     
+    public WalletDTO toDTO () {
+        List<StockDTO> stockList = stocks
+          .stream()
+          .map(Wallet_Stocks::toDTO)
+          .toList();
+        
+        return new WalletDTO(id, stockList);
+    }
 }
 
