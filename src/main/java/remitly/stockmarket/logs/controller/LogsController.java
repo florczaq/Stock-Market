@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/logs")
+@RequestMapping("/log")
 @RequiredArgsConstructor
 public class LogsController {
     private final LogsService logsService;

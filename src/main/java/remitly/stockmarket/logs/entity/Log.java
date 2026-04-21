@@ -32,8 +32,9 @@ public class Log {
     @Column(name = "wallet_id", nullable = false)
     String walletId;
     
-    public void setOperationType (String operationType) {
+    public Log setOperationType (String operationType) {
         this.operationType = operationType.toLowerCase(Locale.ROOT);
+        return this;
     }
     
     public Log (long id, String operationType, String stockName, String walletId) {
@@ -44,6 +45,6 @@ public class Log {
     }
     
     public LogDTO toDTO () {
-        return new LogDTO(this.operationType, this.stockName, this.walletId);
+        return new LogDTO(this.operationType, this.walletId, this.stockName);
     }
 }

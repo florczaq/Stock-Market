@@ -20,5 +20,9 @@ public class LogsService {
     }
     
     public void saveOperationToLogs (String type, String walletId, String stockName) {
+        logsRepository.save(new Log()
+          .setWalletId(walletId)
+          .setStockName(stockName)
+          .setOperationType(type));
     }
 }
