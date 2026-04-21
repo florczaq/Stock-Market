@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import remitly.stockmarket.wallet.dto.OperationTypeDTO;
+import remitly.stockmarket.wallet.dto.WalletDTO;
 import remitly.stockmarket.wallet.service.WalletService;
 
 @RestController
@@ -23,15 +24,15 @@ public class WalletController {
     }
     
     @GetMapping("/{walletId}")
-    public ResponseEntity<String> getWallet (@PathVariable String walletId) {
-        return ResponseEntity.ok("Wallet details for " + walletId);
+    public ResponseEntity<WalletDTO> getWallet (@PathVariable String walletId) {
+        return ResponseEntity.ok(walletService.getDetailsWalletById(walletId));
     }
     
     @GetMapping("/{walletId}/stocks/{stockName}")
     public ResponseEntity<Integer> getStockByName (@PathVariable String walletId,
       @PathVariable String stockName
     ) {
-        return ResponseEntity.ok(0);
+        return ResponseEntity.ok(walletService.getStockQuantityByName(walletId, stockName));
     }
     
 }

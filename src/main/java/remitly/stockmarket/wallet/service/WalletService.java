@@ -6,11 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import remitly.stockmarket.bank.exception.StockNotFoundException;
+import remitly.stockmarket.global.exception.StockNotFoundException;
 import remitly.stockmarket.bank.service.BankService;
+import remitly.stockmarket.wallet.dto.WalletDTO;
 import remitly.stockmarket.wallet.entity.Wallet_Stocks;
 import remitly.stockmarket.global.exception.NotEnoughStockException;
-import remitly.stockmarket.wallet.exception.handler.WalletNotFoundException;
+import remitly.stockmarket.wallet.exception.WalletNotFoundException;
 import remitly.stockmarket.wallet.repository.WalletRepository;
 import remitly.stockmarket.wallet.dto.OperationTypeDTO;
 import remitly.stockmarket.wallet.entity.Wallet;
@@ -83,4 +84,22 @@ public class WalletService {
         walletRepository.save(wallet);
     }
     
+    public WalletDTO getDetailsWalletById (String walletId) throws WalletNotFoundException {
+        return walletRepository
+          .findById(walletId)
+          .map(Wallet::toDTO)
+          .orElseThrow(() -> new WalletNotFoundException("Wallet with id " + walletId + " not found"));
+    }
+    
+     public int getStockQuantityByName (String walletId, String stockName) throws WalletNotFoundException {
+        Wallet wallet = walletRepository
+          .findById(walletId)
+          .orElseThrow(() -> new WalletNotFoundException("Wallet with id " + walletId + " not found"));
+        
+        return wallet.getStocks().stream()
+          .filter(ws -> ws.getStock().getStockName().equals(stockName))
+          .findFirst()
+          .map(Wallet_Stocks::getQuantity)
+          .orElse(0);
+    }
 }
