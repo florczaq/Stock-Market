@@ -1,4 +1,4 @@
-package remitly.stockmarket.stock.controller;
+package remitly.stockmarket.bank.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
