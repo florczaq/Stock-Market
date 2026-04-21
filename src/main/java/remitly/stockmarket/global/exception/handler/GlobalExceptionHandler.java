@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import remitly.stockmarket.bank.exception.StockNotFoundException;
+import remitly.stockmarket.global.exception.StockNotFoundException;
 import remitly.stockmarket.global.exception.NotEnoughStockException;
 
 @RestControllerAdvice

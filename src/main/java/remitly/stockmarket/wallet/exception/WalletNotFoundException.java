@@ -1,4 +1,4 @@
-package remitly.stockmarket.wallet.exception.handler;
+package remitly.stockmarket.wallet.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 
