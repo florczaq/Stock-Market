@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import remitly.stockmarket.logs.service.LogsService;
+import remitly.stockmarket.wallet.dto.OperationTypeDTO;
 
 @Slf4j
 @Aspect
@@ -18,8 +19,8 @@ public class WalletOperationAspect {
       pointcut = "execution(* remitly.stockmarket.wallet.service.WalletService.performStockOperation(..)) && args(walletId, stockName, operationType)",
       argNames = "walletId, stockName, operationType"
     )
-    public void logWalletOperation (String walletId, String stockName, Object operationType) {
+    public void logWalletOperation (String walletId, String stockName, OperationTypeDTO operationType) {
         log.info("Operation performed: {} on stock {} for wallet {}", operationType, stockName, walletId);
-        logsService.saveOperationToLogs(operationType.toString(), walletId, stockName);
+        logsService.saveOperationToLogs(operationType.type(), walletId, stockName);
     }
 }
