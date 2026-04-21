@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/stocks")
-public class StockController {
+public class BankController {
     @GetMapping
     public String getStocks () {
         return "List of stocks";
