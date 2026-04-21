@@ -20,5 +20,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleStockNotFound (Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatusCode.valueOf(404));
     }
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException (Exception e) {
+        return new ResponseEntity<>("An unexpected error occurred while processing your request.", HttpStatusCode.valueOf(500));
+    }
 }
 
