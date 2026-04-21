@@ -23,10 +23,10 @@ public class Wallet_Stocks {
     private Stock stock;
     
     @ManyToOne
-    @JoinColumn(name = "stock_id", nullable = false)
+    @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
     
-    @Column(name = "quantity", nullable = false)
+    @Column(nullable = false)
     @Min(0)
     private int quantity;
 }

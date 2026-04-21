@@ -18,10 +18,10 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Column(name = "stock_name", nullable = false, unique = true)
+    private String stockName;
     
-    @Column(name = "quantity", nullable = false)
+    @Column(nullable = false)
     @Min(0)
     public int quantity;
 }

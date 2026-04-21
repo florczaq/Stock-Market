@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import remitly.stockmarket.bank.entity.Stock;
 
 import java.util.List;
 
@@ -23,5 +24,6 @@ public class Wallet {
       inverseJoinColumns = @JoinColumn(name = "stock_id")
     )
     private List<Wallet_Stocks> stocks;
+    
 }
 
