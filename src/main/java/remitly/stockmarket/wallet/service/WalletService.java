@@ -59,10 +59,10 @@ public class WalletService {
         Wallet_Stocks wallet_stocks = getWalletStocks(wallet).stream()
           .filter(ws -> ws.getStock().getStockName().equals(stockName))
           .findFirst()
-          .orElseThrow(() -> new StockNotFoundException(
+          .orElseThrow(() -> new NotEnoughStockException(
             "Stock with name " + stockName + " not found in wallet " + walletName));
         
-        if (wallet_stocks.getQuantity() - 1 <= 0) {
+        if (wallet_stocks.getQuantity() - 1 < 0) {
             throw new NotEnoughStockException(
               "Not enough stock with name " + stockName + " in wallet " + walletName);
         }
