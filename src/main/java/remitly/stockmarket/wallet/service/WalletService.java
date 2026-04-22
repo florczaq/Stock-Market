@@ -67,7 +67,11 @@ public class WalletService {
               "Not enough stock with name " + stockName + " in wallet " + walletName);
         }
         
-        wallet_stocks.setQuantity(wallet_stocks.getQuantity() - 1);
+        if (wallet_stocks.getQuantity() - 1 == 0) {
+            getWalletStocks(wallet).remove(wallet_stocks);
+        } else {
+            wallet_stocks.setQuantity(wallet_stocks.getQuantity() - 1);
+        }
         walletRepository.save(wallet);
     }
     

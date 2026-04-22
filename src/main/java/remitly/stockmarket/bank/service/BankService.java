@@ -2,6 +2,7 @@ package remitly.stockmarket.bank.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import remitly.stockmarket.bank.dto.BankDTO;
 import remitly.stockmarket.bank.entity.Stock;
 import remitly.stockmarket.bank.repository.StockRepository;
@@ -77,6 +78,7 @@ public class BankService {
      * @param bankDTO A BankDTO containing the updated state of the bank, including a list of StockDTO objects.
      * @throws IllegalArgumentException If any stock in the provided BankDTO has a negative quantity.
      */
+    @Transactional
     public void setBankState (BankDTO bankDTO) throws IllegalArgumentException {
         if (bankDTO == null) {
             throw new IllegalArgumentException("Bank state payload cannot be null");
@@ -84,8 +86,7 @@ public class BankService {
         if (bankDTO.stocks() == null) {
             throw new IllegalArgumentException("Bank stocks list cannot be null");
         }
-
-        stockRepository.deleteAll();
+        
         bankDTO.stocks().forEach(stockDTO -> {
             if (stockDTO == null) {
                 throw new IllegalArgumentException("Stock entry cannot be null");
@@ -94,9 +95,11 @@ public class BankService {
                 throw new IllegalArgumentException(
                   String.format("Stock quantity cannot be negative for stock with name \"%s\"", stockDTO.name()));
             }
-            stockRepository.save(new Stock()
-              .setStockName(stockDTO.name())
-              .setQuantity(stockDTO.quantity()));
+            Stock stock = stockRepository.findByStockName(stockDTO.name())
+              .map(existing -> existing.setQuantity(stockDTO.quantity()))
+              .orElseGet(() -> new Stock().setStockName(stockDTO.name()).setQuantity(stockDTO.quantity()));
+
+            stockRepository.save(stock);
         });
     }
 }
