@@ -15,6 +15,13 @@ import remitly.stockmarket.wallet.dto.OperationTypeDTO;
 public class WalletOperationAspect {
     private final LogsService logsService;
     
+    /**
+     * Aspect method that logs wallet operations after they are performed.
+     *
+     * @param walletId      The ID of the wallet on which the operation was performed.
+     * @param stockName     The name of the stock involved in the operation.
+     * @param operationType The type of operation performed (e.g., "BUY", "SELL").
+     */
     @AfterReturning(
       pointcut = "execution(* remitly.stockmarket.wallet.service.WalletService.performStockOperation(..)) && args(walletId, stockName, operationType)",
       argNames = "walletId, stockName, operationType"

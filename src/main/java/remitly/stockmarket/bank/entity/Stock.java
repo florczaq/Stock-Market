@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import remitly.stockmarket.global.dto.StockDTO;
 
+
 @Entity
 @Table(name = "stock")
 @AllArgsConstructor

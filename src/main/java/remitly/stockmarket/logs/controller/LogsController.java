@@ -17,6 +17,11 @@ import java.util.Map;
 public class LogsController {
     private final LogsService logsService;
     
+    /**
+     * Get logs of successful stock operations.
+     *
+     * @return A ResponseEntity containing a map with a list of LogDTO objects representing the logs.
+     */
     @GetMapping
     public ResponseEntity<Map<String, List<LogDTO>>> getLogs () {
         return ResponseEntity.ok(Map.of("log", logsService.getLogs()));

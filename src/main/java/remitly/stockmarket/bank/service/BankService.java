@@ -16,6 +16,13 @@ import java.util.List;
 public class BankService {
     private final StockRepository stockRepository;
     
+    /**
+     * Retrieves a Stock entity from the database based on its name.
+     *
+     * @param name The name of the stock to retrieve.
+     * @return The Stock entity corresponding to the given name.
+     * @throws StockNotFoundException If no stock with the given name is found in the database.
+     */
     public Stock getStockByName (String name) throws StockNotFoundException {
         return stockRepository
           .findByStockName(name)
@@ -25,27 +32,51 @@ public class BankService {
           );
     }
     
+    /**
+     * Retrieves a list of all stocks in the bank, converted to StockDTO objects.
+     *
+     * @return A list of StockDTO objects representing all stocks in the bank.
+     */
     public List<StockDTO> getAllStocks () {
         return stockRepository.findAll().stream().map(Stock::toDTO).toList();
     }
     
+    /**
+     * Decreases the quantity of a specific stock by one unit.
+     *
+     * @param stockName The name of the stock to decrease the quantity of.
+     * @throws StockNotFoundException  If no stock with the given name is found in the database.
+     * @throws NotEnoughStockException If the stock's quantity is already at zero and cannot be decreased further.
+     */
     public void decreaseStockQuantityByOne (String stockName)
       throws StockNotFoundException, NotEnoughStockException {
         Stock stock = this.getStockByName(stockName);
-
+        
         if (stock.getQuantity() - 1 < 0) {
             throw new NotEnoughStockException(
               String.format("Not enough stock with name \"%s\" in the bank", stockName));
         }
-
+        
         stockRepository.save(stock.setQuantity(stock.getQuantity() - 1));
     }
     
+    /**
+     * Increases the quantity of a specific stock by one unit.
+     *
+     * @param stockName The name of the stock to increase the quantity of.
+     * @throws StockNotFoundException If no stock with the given name is found in the database.
+     */
     public void increaseStockQuantityByOne (String stockName) throws StockNotFoundException {
         Stock stock = this.getStockByName(stockName);
         stockRepository.save(stock.setQuantity(stock.getQuantity() + 1));
     }
     
+    /**
+     * Updates the state of the bank with new stock information provided in a BankDTO object.
+     *
+     * @param bankDTO A BankDTO containing the updated state of the bank, including a list of StockDTO objects.
+     * @throws IllegalArgumentException If any stock in the provided BankDTO has a negative quantity.
+     */
     public void setBankState (BankDTO bankDTO) throws IllegalArgumentException {
         stockRepository.deleteAll();
         bankDTO.stocks().forEach(stockDTO -> {

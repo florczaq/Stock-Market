@@ -15,6 +15,12 @@ public class GlobalController {
     
     private final ApplicationContext context;
     
+    /**
+     * Endpoint for shutting down the instance after a 1-second delay.
+     * Shutting downs runs in separate thread to allow the response to be sent before the instance is shut down.
+     *
+     * @return A ResponseEntity containing a message indicating that the instance will be shut down.
+     */
     @PostMapping("/chaos")
     public ResponseEntity<String> kilInstance () {
         Thread shutdownHook = new Thread(() -> {
