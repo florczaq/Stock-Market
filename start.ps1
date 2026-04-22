@@ -20,10 +20,17 @@ if ($existingDbId) {
 } else {
     docker compose -p $Project up -d db
 }
+
+$AppNetwork = (docker inspect -f '{{range $name, $_ := .NetworkSettings.Networks}}{{println $name}}{{end}}' $DbName | Select-Object -First 1).Trim()
+if (-not $AppNetwork) {
+    throw "Could not resolve network for $DbName"
+}
+Write-Host "Using network: $AppNetwork"
+
 docker rm -f "stockmarket-app-$Port" 2>$null
 docker run -d `
   --name "stockmarket-app-$Port" `
-  --network "${Project}_default" `
+  --network "$AppNetwork" `
   -e SPRING_DATASOURCE_URL=jdbc:postgresql://stockmarket-db:5432/stockmarket `
   -e SPRING_DATASOURCE_USERNAME=sa `
   -e SPRING_DATASOURCE_PASSWORD=secret `
