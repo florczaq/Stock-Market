@@ -78,8 +78,18 @@ public class BankService {
      * @throws IllegalArgumentException If any stock in the provided BankDTO has a negative quantity.
      */
     public void setBankState (BankDTO bankDTO) throws IllegalArgumentException {
+        if (bankDTO == null) {
+            throw new IllegalArgumentException("Bank state payload cannot be null");
+        }
+        if (bankDTO.stocks() == null) {
+            throw new IllegalArgumentException("Bank stocks list cannot be null");
+        }
+
         stockRepository.deleteAll();
         bankDTO.stocks().forEach(stockDTO -> {
+            if (stockDTO == null) {
+                throw new IllegalArgumentException("Stock entry cannot be null");
+            }
             if (stockDTO.quantity() < 0) {
                 throw new IllegalArgumentException(
                   String.format("Stock quantity cannot be negative for stock with name \"%s\"", stockDTO.name()));
