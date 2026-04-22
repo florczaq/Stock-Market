@@ -1,11 +1,13 @@
 package remitly.stockmarket.global.exception.handler;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import remitly.stockmarket.global.exception.StockNotFoundException;
 import remitly.stockmarket.global.exception.NotEnoughStockException;
 
@@ -19,7 +21,12 @@ public class GlobalExceptionHandler {
      * @param e The exception that was thrown.
      * @return A ResponseEntity containing the error message and a 400 Bad Request status code.
      */
-    @ExceptionHandler({NotEnoughStockException.class, IllegalArgumentException.class})
+    @ExceptionHandler({
+      NotEnoughStockException.class,
+      IllegalArgumentException.class,
+      ConstraintViolationException.class,
+      HandlerMethodValidationException.class
+    })
     public ResponseEntity<String> handleNotEnoughStock (Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatusCode.valueOf(400));
     }
@@ -35,17 +42,5 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatusCode.valueOf(404));
     }
     
-    /**
-     * Handles any unexpected exceptions that may occur during request processing.
-     *
-     * @param e The exception that was thrown.
-     * @return A ResponseEntity containing a generic error message and a 500 Internal Server Error status code.
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneralException (Exception e) {
-        log.error(e.getMessage());
-        return new ResponseEntity<>(
-          "An unexpected error occurred while processing your request.", HttpStatusCode.valueOf(500));
-    }
 }
 
