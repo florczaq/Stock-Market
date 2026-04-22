@@ -1,6 +1,7 @@
 package remitly.stockmarket.global.exception.handler;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import remitly.stockmarket.global.exception.StockNotFoundException;
 import remitly.stockmarket.global.exception.NotEnoughStockException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
@@ -41,6 +43,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException (Exception e) {
+        log.error(e.getMessage());
         return new ResponseEntity<>(
           "An unexpected error occurred while processing your request.", HttpStatusCode.valueOf(500));
     }
