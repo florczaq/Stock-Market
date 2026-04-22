@@ -51,61 +51,15 @@ The database does not use a separate SQL initialization file. The schema is crea
 
 ## Available Endpoints
 
-### `GET /stocks`
-
-- Description: Get current bank state (all stocks with prices).
-- Path params: none
-- Request body: none
-- Response body: `BankDTO`
-- Objects: `BankDTO`, `StockDTO`
-
-### `POST /stocks`
-
-- Description: Update bank state with a `BankDTO` payload.
-- Path params: none
-- Request body: `BankDTO`
-- Response body: none (`200 OK`)
-- Objects: `BankDTO`, `StockDTO`
-
-### `POST /wallets/{walletId}/stocks/{stockName}`
-
-- Description: Perform wallet stock operation (`BUY` or `SELL`) using `OperationTypeDTO` body.
-- Path params: `walletId` (String), `stockName` (String)
-- Request body: `OperationTypeDTO`
-- Response body: none (`200 OK`)
-- Objects: `OperationTypeDTO`
-
-### `GET /wallets/{walletId}`
-
-- Description: Get wallet details by wallet ID.
-- Path params: `walletId` (String)
-- Request body: none
-- Response body: `WalletDTO`
-- Objects: `WalletDTO`, `StockDTO`
-
-### `GET /wallets/{walletId}/stocks/{stockName}`
-
-- Description: Get quantity of a specific stock in a wallet.
-- Path params: `walletId` (String), `stockName` (String)
-- Request body: none
-- Response body: integer quantity
-- Objects: none (primitive response)
-
-### `GET /log`
-
-- Description: Get logs of successful stock operations.
-- Path params: none
-- Request body: none
-- Response body: object with `log: LogDTO[]`
-- Objects: `LogDTO`
-
-### `POST /chaos`
-
-- Description: Shutdown the running instance after ~1 second delay.
-- Path params: none
-- Request body: none
-- Response body: String message
-- Objects: none (String response)
+| Endpoint                                      | Description                                                                     | Path params                               | Request body       | Response body               | Objects                   |
+|-----------------------------------------------|---------------------------------------------------------------------------------|-------------------------------------------|--------------------|-----------------------------|---------------------------|
+| `GET /stocks`                                 | Get current bank state (all stocks with prices).                                | none                                      | none               | `BankDTO`                   | `BankDTO`, `StockDTO`     |
+| `POST /stocks`                                | Update bank state with a `BankDTO` payload.                                     | none                                      | `BankDTO`          | none (`200 OK`)             | `BankDTO`, `StockDTO`     |
+| `POST /wallets/{walletId}/stocks/{stockName}` | Perform wallet stock operation (`BUY` or `SELL`) using `OperationTypeDTO` body. | `walletId` (String), `stockName` (String) | `OperationTypeDTO` | none (`200 OK`)             | `OperationTypeDTO`        |
+| `GET /wallets/{walletId}`                     | Get wallet details by wallet ID.                                                | `walletId` (String)                       | none               | `WalletDTO`                 | `WalletDTO`, `StockDTO`   |
+| `GET /wallets/{walletId}/stocks/{stockName}`  | Get quantity of a specific stock in a wallet.                                   | `walletId` (String), `stockName` (String) | none               | integer quantity            | none (primitive response) |
+| `GET /log`                                    | Get logs of successful stock operations.                                        | none                                      | none               | object with `log: LogDTO[]` | `LogDTO`                  |
+| `POST /chaos`                                 | Shutdown the running instance after ~1 second delay.                            | none                                      | none               | String message              | none (String response)    |
 
 ### Data transfer objects (DTOs)
 
